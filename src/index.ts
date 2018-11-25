@@ -1,6 +1,6 @@
 import {IStyleAPI, IStyleItem} from 'import-sort-style';
 
-export default function(styleApi: IStyleAPI): Array<IStyleItem> {
+export default function(styleApi: IStyleAPI): IStyleItem[] {
   const {
     and,
     hasDefaultMember,
@@ -12,30 +12,33 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
     hasOnlyNamespaceMember,
     isAbsoluteModule,
     isRelativeModule,
+    isScopedModule,
     member,
     name,
     not,
     startsWithAlphanumeric,
     startsWithLowerCase,
     startsWithUpperCase,
+    startsWith,
     unicode,
   } = styleApi;
 
   return [
     // import "foo"
     {match: and(hasNoMember, isAbsoluteModule)},
-    {separator: true},
 
-    // import _ from "bar";
+    // Make lodash always on top
     {
       match: and(
         hasOnlyDefaultMember,
         isAbsoluteModule,
-        not(member(startsWithAlphanumeric)),
+        member(startsWith('_')),
       ),
       sort: member(unicode),
     },
+
     // import Foo from "bar";
+    // since it's mainly for react, put the 'React' imports first
     {
       match: and(
         hasOnlyDefaultMember,
@@ -44,12 +47,23 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
       ),
       sort: member(unicode),
     },
+
     // import foo from "bar";
     {
       match: and(
         hasOnlyDefaultMember,
         isAbsoluteModule,
         member(startsWithLowerCase),
+      ),
+      sort: member(unicode),
+    },
+
+    // import _ from "bar";
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        isAbsoluteModule,
+        not(member(startsWithAlphanumeric)),
       ),
       sort: member(unicode),
     },
@@ -80,6 +94,38 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
       ),
       sort: member(unicode),
     },
+    {separator: true},
+
+    // handle blueprint js
+    // import {Foo, bar, …} from "baz";
+    {
+      match: and(
+        hasOnlyNamedMembers,
+        isAbsoluteModule,
+        member(startsWithUpperCase),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyNamedMembers,
+        isScopedModule,
+        member(startsWithLowerCase),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyNamedMembers,
+        isScopedModule,
+        not(member(startsWithAlphanumeric)),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+
     {separator: true},
     // import _, {bar, …} from "baz";
     {
