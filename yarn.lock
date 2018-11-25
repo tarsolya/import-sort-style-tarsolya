@@ -189,6 +189,11 @@ he@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
+import-sort-parser@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/import-sort-parser/-/import-sort-parser-5.0.0.tgz#9cbf02e4d672bd8056fe757ea81f86f6e1776a57"
+  integrity sha1-nL8C5NZyvYBW/nV+qB+G9uF3alc=
+
 import-sort-style@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/import-sort-style/-/import-sort-style-5.0.0.tgz#6547e3792b33994394dd86eeb6df6826838ad97b"

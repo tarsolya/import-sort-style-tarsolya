@@ -1,4 +1,4 @@
-import {IStyleAPI, IStyleItem} from "import-sort-style";
+import {IStyleAPI, IStyleItem} from 'import-sort-style';
 
 export default function(styleApi: IStyleAPI): Array<IStyleItem> {
   const {
@@ -25,69 +25,6 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
     // import "foo"
     {match: and(hasNoMember, isAbsoluteModule)},
     {separator: true},
-
-    // import "./foo"
-    {match: and(hasNoMember, isRelativeModule)},
-    {separator: true},
-
-    // import * as _ from "bar";
-    {
-      match: and(
-        hasOnlyNamespaceMember,
-        isAbsoluteModule,
-        not(member(startsWithAlphanumeric)),
-      ),
-      sort: member(unicode),
-    },
-    // import * as Foo from "bar";
-    {
-      match: and(
-        hasOnlyNamespaceMember,
-        isAbsoluteModule,
-        member(startsWithUpperCase),
-      ),
-      sort: member(unicode),
-    },
-    // import * as foo from "bar";
-    {
-      match: and(
-        hasOnlyNamespaceMember,
-        isAbsoluteModule,
-        member(startsWithLowerCase),
-      ),
-      sort: member(unicode),
-    },
-
-    // import _, * as bar from "baz";
-    {
-      match: and(
-        hasDefaultMember,
-        hasNamespaceMember,
-        isAbsoluteModule,
-        not(member(startsWithAlphanumeric)),
-      ),
-      sort: member(unicode),
-    },
-    // import Foo, * as bar from "baz";
-    {
-      match: and(
-        hasDefaultMember,
-        hasNamespaceMember,
-        isAbsoluteModule,
-        member(startsWithUpperCase),
-      ),
-      sort: member(unicode),
-    },
-    // import foo, * as bar from "baz";
-    {
-      match: and(
-        hasDefaultMember,
-        hasNamespaceMember,
-        isAbsoluteModule,
-        member(startsWithUpperCase),
-      ),
-      sort: member(unicode),
-    },
 
     // import _ from "bar";
     {
@@ -116,7 +53,34 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
       ),
       sort: member(unicode),
     },
-
+    // import * as _ from "bar";
+    {
+      match: and(
+        hasOnlyNamespaceMember,
+        isAbsoluteModule,
+        not(member(startsWithAlphanumeric)),
+      ),
+      sort: member(unicode),
+    },
+    // import * as Foo from "bar";
+    {
+      match: and(
+        hasOnlyNamespaceMember,
+        isAbsoluteModule,
+        member(startsWithUpperCase),
+      ),
+      sort: member(unicode),
+    },
+    // import * as foo from "bar";
+    {
+      match: and(
+        hasOnlyNamespaceMember,
+        isAbsoluteModule,
+        member(startsWithLowerCase),
+      ),
+      sort: member(unicode),
+    },
+    {separator: true},
     // import _, {bar, …} from "baz";
     {
       match: and(
@@ -128,6 +92,39 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
       sort: member(unicode),
       sortNamedMembers: name(unicode),
     },
+
+    // import Foo, * as bar from "baz";
+    {
+      match: and(
+        hasDefaultMember,
+        hasNamespaceMember,
+        isAbsoluteModule,
+        member(startsWithUpperCase),
+      ),
+      sort: member(unicode),
+    },
+    // import foo, * as bar from "baz";
+    {
+      match: and(
+        hasDefaultMember,
+        hasNamespaceMember,
+        isAbsoluteModule,
+        member(startsWithUpperCase),
+      ),
+      sort: member(unicode),
+    },
+
+    // import _, * as bar from "baz";
+    {
+      match: and(
+        hasDefaultMember,
+        hasNamespaceMember,
+        isAbsoluteModule,
+        not(member(startsWithAlphanumeric)),
+      ),
+      sort: member(unicode),
+    },
+
     // import Foo, {bar, …} from "baz";
     {
       match: and(
@@ -150,7 +147,6 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
       sort: member(unicode),
       sortNamedMembers: name(unicode),
     },
-
     // import {_, bar, …} from "baz";
     {
       match: and(
@@ -184,6 +180,33 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
 
     {separator: true},
 
+    // import _ from "./bar";
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        isRelativeModule,
+        not(member(startsWithAlphanumeric)),
+      ),
+      sort: member(unicode),
+    },
+    // import Foo from "./bar";
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        isRelativeModule,
+        member(startsWithUpperCase),
+      ),
+      sort: member(unicode),
+    },
+    // import foo from "./bar";
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        isRelativeModule,
+        member(startsWithLowerCase),
+      ),
+      sort: member(unicode),
+    },
     // import * as _ from "./bar";
     {
       match: and(
@@ -239,34 +262,6 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
         hasNamespaceMember,
         isRelativeModule,
         member(startsWithUpperCase),
-      ),
-      sort: member(unicode),
-    },
-
-    // import _ from "./bar";
-    {
-      match: and(
-        hasOnlyDefaultMember,
-        isRelativeModule,
-        not(member(startsWithAlphanumeric)),
-      ),
-      sort: member(unicode),
-    },
-    // import Foo from "./bar";
-    {
-      match: and(
-        hasOnlyDefaultMember,
-        isRelativeModule,
-        member(startsWithUpperCase),
-      ),
-      sort: member(unicode),
-    },
-    // import foo from "./bar";
-    {
-      match: and(
-        hasOnlyDefaultMember,
-        isRelativeModule,
-        member(startsWithLowerCase),
       ),
       sort: member(unicode),
     },
@@ -336,6 +331,10 @@ export default function(styleApi: IStyleAPI): Array<IStyleItem> {
       sortNamedMembers: name(unicode),
     },
 
+    {separator: true},
+
+    // import "./foo"
+    {match: and(hasNoMember, isRelativeModule)},
     {separator: true},
   ];
 }
