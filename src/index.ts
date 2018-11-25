@@ -1,4 +1,4 @@
-import {IStyleAPI, IStyleItem} from 'import-sort-style';
+import {IStyleAPI, IStyleItem} from "import-sort-style";
 
 export default function(styleApi: IStyleAPI): IStyleItem[] {
   const {
@@ -21,6 +21,7 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
     startsWithUpperCase,
     startsWith,
     unicode,
+    moduleName,
   } = styleApi;
 
   return [
@@ -32,7 +33,7 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
       match: and(
         hasOnlyDefaultMember,
         isAbsoluteModule,
-        member(startsWith('_')),
+        member(startsWith("_")),
       ),
       sort: member(unicode),
     },
@@ -97,37 +98,19 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
     {separator: true},
 
     // handle blueprint js
-    // import {Foo, bar, …} from "baz";
     {
       match: and(
         hasOnlyNamedMembers,
-        isAbsoluteModule,
+        isScopedModule,
         member(startsWithUpperCase),
+        moduleName(startsWith("@blueprint")),
       ),
       sort: member(unicode),
       sortNamedMembers: name(unicode),
     },
-    {
-      match: and(
-        hasOnlyNamedMembers,
-        isScopedModule,
-        member(startsWithLowerCase),
-      ),
-      sort: member(unicode),
-      sortNamedMembers: name(unicode),
-    },
-    {
-      match: and(
-        hasOnlyNamedMembers,
-        isScopedModule,
-        not(member(startsWithAlphanumeric)),
-      ),
-      sort: member(unicode),
-      sortNamedMembers: name(unicode),
-    },
-
     {separator: true},
-    // import _, {bar, …} from "baz";
+
+    // next to all the usual absolute imports
     {
       match: and(
         hasDefaultMember,
@@ -138,8 +121,6 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
       sort: member(unicode),
       sortNamedMembers: name(unicode),
     },
-
-    // import Foo, * as bar from "baz";
     {
       match: and(
         hasDefaultMember,
@@ -149,7 +130,6 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
       ),
       sort: member(unicode),
     },
-    // import foo, * as bar from "baz";
     {
       match: and(
         hasDefaultMember,
@@ -160,7 +140,6 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
       sort: member(unicode),
     },
 
-    // import _, * as bar from "baz";
     {
       match: and(
         hasDefaultMember,
@@ -171,7 +150,6 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
       sort: member(unicode),
     },
 
-    // import Foo, {bar, …} from "baz";
     {
       match: and(
         hasDefaultMember,
@@ -226,7 +204,184 @@ export default function(styleApi: IStyleAPI): IStyleItem[] {
 
     {separator: true},
 
-    // import _ from "./bar";
+    // now handle packages defined / scoped in tsconfig
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        member(startsWithUpperCase),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        member(startsWithLowerCase),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyDefaultMember,
+        member(startsWithAlphanumeric),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+
+    {
+      match: and(
+        hasOnlyNamespaceMember,
+        member(startsWithUpperCase),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyNamespaceMember,
+        member(startsWithLowerCase),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyNamespaceMember,
+        member(startsWithAlphanumeric),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+
+    {
+      match: and(
+        hasOnlyNamedMembers,
+        member(startsWithUpperCase),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyNamedMembers,
+        member(startsWithLowerCase),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+    {
+      match: and(
+        hasOnlyNamedMembers,
+        member(startsWithAlphanumeric),
+        moduleName(
+          startsWith(
+            "src/",
+            "@src/",
+            "@reducers",
+            "@components",
+            "@services",
+            "@views",
+            "@assets",
+          ),
+        ),
+      ),
+      sort: member(unicode),
+      sortNamedMembers: name(unicode),
+    },
+
+    {separator: true},
+
+    // and finally all the local stuff
     {
       match: and(
         hasOnlyDefaultMember,
